@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useState, useEffect } from "react";
+import Login from "./components/Login";
+import Header from "./components/Header";
+import CreatePost from "./components/CreatePost";
+import PostList from "./components/PostList";
 
-function App() {
+const App = () => {
+  const [user, setUser] = useState("eddie");
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    document.title = user ? `${user}'s feed` : "Please login";
+  }, [user]);
+
+  if (!user) {
+    return <Login setUser={setUser} />;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header user={user} setUser={setUser} />
+      <CreatePost user={user} setPosts={setPosts} posts={posts} />
+      <PostList posts={posts} />
+    </>
   );
-}
+};
 
 export default App;
